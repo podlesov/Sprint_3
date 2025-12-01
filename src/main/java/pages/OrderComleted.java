@@ -1,7 +1,9 @@
 package pages;
 
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -12,7 +14,7 @@ public class OrderComleted {
     WebDriver driver;
     public WebDriverWait wait;
 
-    By successMessage = By.xpath(".//div[contains(text(), 'Заказ оформлен')]");
+    By successMessage = By.className("Order_Header__BZXOb");
 
     public OrderComleted(WebDriver driver) {
 
@@ -22,7 +24,11 @@ public class OrderComleted {
 
     public void orderCompleteMessage(String customerFirstName, String customerLastName) {
 
-       wait.until(ExpectedConditions.visibilityOfElementLocated(successMessage));
-       System.out.println("✅ Заказ для " + customerFirstName + " " + customerLastName + " успешно оформлен!\n");
+        WebElement successOrder = wait.until(ExpectedConditions.visibilityOfElementLocated(successMessage));
+        String actualSuccessOrderText = successOrder.getText();
+        String successOrderText = "Про аренду";
+        Assert.assertEquals("⚠️Оформить заказ не удалось", successOrderText,  actualSuccessOrderText);
+        System.out.println("✅ Заказ для " + customerFirstName + " " + customerLastName + " успешно оформлен!\n");
+
     }
 }
